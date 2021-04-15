@@ -9,6 +9,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
@@ -38,6 +40,7 @@ public class JDBCController implements Initializable {
     
     
     Coffee[] cof = new Coffee[4];
+    
     @FXML
     void OnAddBtn(ActionEvent event) {
     	ObservableList<String> nlist = nlist = FXCollections.observableArrayList();
@@ -54,7 +57,7 @@ public class JDBCController implements Initializable {
     void OnRidoTake(ActionEvent event) {
 
     }
-
+    double price;
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		    Connection	con= null;
@@ -63,7 +66,7 @@ public class JDBCController implements Initializable {
 		try {
 			Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
 			
-			String db= "F:\\CoffeeShope.accdb";
+			String db= "C:\\Users\\omarh\\git\\OmarAprilJDBC\\OmarAprilJDBC\\src\\CoffeeShope.accdb";
 			
 			String path="jdbc:ucanaccess://"+db;
 			
@@ -77,7 +80,7 @@ public class JDBCController implements Initializable {
 			
 			while (rs.next()) {
 				String Coffee = rs.getString(2);
-				double price = rs.getDouble(3);
+				 price = rs.getDouble(3);
 				cof[i]= new Coffee(Coffee, price);
 				MinuList.getItems().add(Coffee+"$"+price);
 						
@@ -93,12 +96,28 @@ public class JDBCController implements Initializable {
 		}
 		
 		
+		
+	}
+	public double sum (double x)
+	{
+		int i = 0;
+		return i+=x;
 	}
 	@FXML
     void OnCheckBtn(ActionEvent event) {
 		
+		Alert win = new Alert (AlertType.INFORMATION);
+		win.setTitle("Total bill");
+		win.setHeaderText(null);
+		if (RadioDin.isSelected()) {
+			win.setContentText(name.getText()+" Please pay $"+sum(price)+" For Dine In ");
+		}
+		else
+		{
+			win.setContentText(name.getText()+" Please pay $"+sum(price)+" For Take Away");
+		}
 		
-
+		win.showAndWait();
     }
 
 }
